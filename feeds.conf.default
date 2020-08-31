@@ -1,0 +1,2 @@
+src-git buxiaomo https://github.com/buxiaomo/openwrt-package.git
+src-git passwall https://github.com/buxiaomo/passwall.git

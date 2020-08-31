@@ -1,0 +1,26 @@
+From 690dabf0ea01ca3065be6c2b119a68b27343dc2a Mon Sep 17 00:00:00 2001
+From: buxiaomo <95112082@qq.com>
+Date: Mon, 3 Aug 2020 19:44:38 +0800
+Subject: [PATCH 2/8] set the time zone
+
+---
+ package/base-files/files/bin/config_generate | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/package/base-files/files/bin/config_generate b/package/base-files/files/bin/config_generate
+index fa3f572c8f..4ee4f6fdb3 100755
+--- a/package/base-files/files/bin/config_generate
++++ b/package/base-files/files/bin/config_generate
+@@ -242,7 +242,8 @@ generate_static_system() {
+ 		delete system.@system[0]
+ 		add system system
+ 		set system.@system[-1].hostname='OpenWrt'
+-		set system.@system[-1].timezone='UTC'
++		set system.@system[-1].timezone='CST-8'
++                set system.@system[-1].zonename='Asia/Shanghai'
+ 		set system.@system[-1].ttylogin='0'
+ 		set system.@system[-1].log_size='64'
+ 		set system.@system[-1].urandom_seed='0'
+-- 
+2.27.0
+

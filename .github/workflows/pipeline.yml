@@ -1,0 +1,151 @@
+name: OpenWrt Firmware Pipeline
+
+# on:
+#   push:
+#     branches:
+#     - master
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/pipeline.yml'
+      - 'config'
+      - 'files'
+      - 'diy.sh'
+      - 'feeds.conf.default'
+  schedule:
+    - cron: '0 23 * * 5'
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Clean up disk space
+      run: |
+        set -x
+        [ test -f /swapfile ] && sudo swapoff /swapfile
+        [ test -f ] && sudo rm -rf /swapfile
+        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        docker rmi $(docker images -q)
+        sudo apt-get -y purge \
+          azure-cli \
+          ghc* \
+          zulu* \
+          hhvm \
+          llvm* \
+          firefox \
+          google* \
+          dotnet* \
+          powershell \
+          openjdk* \
+          mysql* \
+          php*
+        sudo apt autoremove --purge -y
+
+    - name: Initialization environment
+      run: |
+        set -x
+        [ -f sources.list ] && (
+          sudo cp -rf sources.list /etc/apt/sources.list
+          sudo rm -rf /etc/apt/sources.list.d/* /var/lib/apt/lists/*
+          sudo apt-get clean all
+        )
+        sudo apt-get update
+        sudo apt-get install make gcc g++ unzip git file wget python python3 libgnutls28-dev perl libpam0g-dev liblzma-dev libssh2-1-dev libidn2-0-dev libcap-dev libjansson-dev -y
+        sudo apt-get install subversion zlib1g-dev build-essential libncursesw5-dev libncurses5-dev gawk gettext libssl-dev libelf-dev ecj qemu-utils mkisofs libglib2.0-dev -y
+        sudo apt-get autoremove --purge -y
+        sudo apt-get clean
+        sudo timedatectl set-timezone Asia/Shanghai
+
+    - name: Clone openwrt project
+      env: 
+        REPO_URL: https://github.com/openwrt/openwrt.git
+        REPO_BRANCH: v19.07.3
+      run: |
+        git clone ${REPO_URL} ./openwrt
+
+    - name: Add extend feeds
+      run: |
+        [ -f ./feeds.conf.default ] && cat ./feeds.conf.default >> ./openwrt/feeds.conf.default
+
+    - name: Update feeds
+      working-directory: ./openwrt
+      run: |
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
+
+    - name: Load custom configuration
+      working-directory: ./openwrt
+      run: |
+        [ -d ../files ] && cp -fr ../files ./files
+        [ -f ../config ] && cp -fr ../config ./.config
+        make defconfig
+
+    - name: Custom settings
+      env: 
+        FILE_NAME: "diy.sh"
+      working-directory: ./openwrt
+      run: |
+        [ -f ../${FILE_NAME} ] && (
+          cp -fr ../${FILE_NAME} ./${FILE_NAME}
+          chmod +x ./${FILE_NAME}
+          ./${FILE_NAME}
+        )
+
+    - name: Download package source code
+      working-directory: ./openwrt
+      run: |
+        make download -j$(nproc)
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
+
+    - name: Multi-thread compile
+      working-directory: ./openwrt
+      run: |
+        echo -e "$(nproc) thread build."
+        make -j$(nproc)
+
+    - name: Single-thread compile
+      if: failure()
+      working-directory: ./openwrt
+      run: |
+        make -j1 V=s
+
+    - name: Make the Artifact
+      id: artifact
+      run: |
+        rm -rf ./artifact
+        mkdir -p ./artifact
+        cp ./openwrt/bin/targets/ar71xx/generic/openwrt-ar71xx-generic-gl-mifi-squashfs-sysupgrade.bin ./artifact/
+        cp ./openwrt/bin/targets/ar71xx/generic/config.buildinfo ./artifact/
+        zip -r artifact.zip ./artifact/
+        release_tag="GL-MiFi-$(date +%Y-%m-%d)"
+        echo "##[set-output name=release_tag;]$release_tag"
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      with:
+        tag_name: ${{ steps.artifact.outputs.release_tag }}
+        release_name: Auto Release ${{ steps.artifact.outputs.release_tag }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./artifact.zip
+        asset_name: ${{ steps.artifact.outputs.release_tag }}-ROM.zip
+        asset_content_type: application/zip
