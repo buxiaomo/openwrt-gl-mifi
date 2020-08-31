@@ -61,15 +61,10 @@ function build(){
 }
 
 function artifact(){
-	mkdir -p ./openwrt-r2s-squashfs-img
-	cp ./openwrt/bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r2s-squashfs-sysupgrade.img.gz ./openwrt-r2s-squashfs-img
-  cp ./openwrt/bin/targets/rockchip/armv8/config.buildinfo ./openwrt-r2s-squashfs-img
-	zip -r openwrt-r2s-squashfs-img.zip ./openwrt-r2s-squashfs-img
-
-	mkdir -p ./openwrt-r2s-ext4-img
-	cp ./openwrt/bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r2s-ext4-sysupgrade.img.gz ./openwrt-r2s-ext4-img
-  cp ./openwrt/bin/targets/rockchip/armv8/config.buildinfo ./openwrt-r2s-ext4-img
-	zip -r openwrt-r2s-ext4-img.zip ./openwrt-r2s-ext4-img
+	mkdir -p ./openwrt-gl-mifi
+	cp ./openwrt/bin/targets/ath79/generic/openwrt-ath79-generic-glinet_gl-mifi-squashfs-sysupgrade.bin ./openwrt-gl-mifi
+  cp ./openwrt/bin/targets/rockchip/armv8/config.buildinfo ./openwrt-gl-mifi
+	zip -r openwrt-gl-mifi.zip ./openwrt-gl-mifi
 }
 
 function auto(){
