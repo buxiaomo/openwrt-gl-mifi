@@ -52,7 +52,7 @@ function build(){
 	./scripts/feeds update -a
 	./scripts/feeds install -a
 	[ -d ../patches ] && git am -3 ../patches/*.patch
-	[ -f ../files ] && cp -fr ../files ./files
+	[ -d ../files ] && cp -fr ../files ./files
 	[ -f ../config ] && cp -fr ../config ./.config
 	make defconfig
 	make download -j$(nproc) V=s
@@ -63,7 +63,7 @@ function build(){
 function artifact(){
 	mkdir -p ./openwrt-gl-mifi
 	cp ./openwrt/bin/targets/ath79/generic/openwrt-ath79-generic-glinet_gl-mifi-squashfs-sysupgrade.bin ./openwrt-gl-mifi
-  cp ./openwrt/bin/targets/rockchip/armv8/config.buildinfo ./openwrt-gl-mifi
+  cp ./openwrt/bin/targets/ath79/generic/config.buildinfo ./openwrt-gl-mifi
 	zip -r openwrt-gl-mifi.zip ./openwrt-gl-mifi
 }
 
