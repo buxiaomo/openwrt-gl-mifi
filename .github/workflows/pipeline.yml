@@ -1,23 +1,23 @@
 name: OpenWrt Firmware For GL-MiFi
 
-on:
-  push:
-    branches:
-    - master
-
 # on:
 #   push:
 #     branches:
-#       - master
-#     paths:
-#       - '.github/workflows/pipeline.yml'
-#       - 'files'
-#       - 'patches'
-#       - 'action.sh'
-#       - 'config'
-#       - 'feeds.conf.default'
-#   schedule:
-#     - cron: '00 18 * * *'
+#     - master
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/pipeline.yml'
+      - 'files'
+      - 'patches'
+      - 'action.sh'
+      - 'config'
+      - 'feeds.conf.default'
+  schedule:
+    - cron: '00 18 * * *'
 
 jobs:
   build:
