@@ -27,12 +27,20 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: Auto Build
+    - name: Clean workspace
       run: |
-        set -x
         ./action.sh cleanup
+
+    - name: Init system
+      run: |
         ./action.sh init
+
+    - name: Build firmware
+      run: |
         ./action.sh build
+
+    - name: Artifact firmware
+      run: |
         ./action.sh artifact
 
     - name: Set Release Name
