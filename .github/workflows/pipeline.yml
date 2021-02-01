@@ -17,7 +17,7 @@ on:
       - 'config'
       - 'feeds.conf.default'
   schedule:
-    - cron: '00 18 * * *'
+    - cron: '00 18 * * 5'
 
 jobs:
   clean:
