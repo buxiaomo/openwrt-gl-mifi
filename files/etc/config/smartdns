@@ -31,6 +31,7 @@ config server
 	option name 'AliDNS1'
 	option ip '223.5.5.5'
 	option blacklist_ip '0'
+	option server_group 'cn'
 
 config server
 	option enabled '1'
@@ -38,6 +39,7 @@ config server
 	option name 'AliDNS2'
 	option ip '223.6.6.6'
 	option blacklist_ip '0'
+	option server_group 'cn'
 
 config server
 	option enabled '1'
@@ -45,6 +47,7 @@ config server
 	option name '114DNS1'
 	option ip '114.114.114.114'
 	option blacklist_ip '0'
+	option server_group 'cn'
 
 config server
 	option enabled '1'
@@ -52,6 +55,7 @@ config server
 	option name '114DNS1'
 	option ip '114.114.115.115'
 	option blacklist_ip '0'
+	option server_group 'cn'
 
 config server
 	option enabled '1'
@@ -59,34 +63,7 @@ config server
 	option name 'BaiduDNS'
 	option ip '180.76.76.76'
 	option blacklist_ip '0'
-
-config server
-	option enabled '1'
-	option type 'udp'
-	option name 'oneDNS'
-	option ip '117.50.10.10'
-	option blacklist_ip '0'
-
-config server
-	option enabled '1'
-	option type 'udp'
-	option name 'DNSPod'
-	option ip '119.29.29.29'
-	option blacklist_ip '0'
-
-config server
-	option enabled '1'
-	option type 'udp'
-	option name 'CNNICDNS01'
-	option ip '1.2.4.8'
-	option blacklist_ip '0'
-
-config server
-	option enabled '1'
-	option type 'udp'
-	option name 'CNNICDNS02'
-	option ip '210.2.4.8'
-	option blacklist_ip '0'
+	option server_group 'cn'
 
 config server
 	option enabled '1'
