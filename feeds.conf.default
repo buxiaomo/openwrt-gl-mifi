@@ -1,1 +1,1 @@
-src-git bypass https://github.com/kiddin9/openwrt-packages.git
+src-git passwall https://github.com/xiaorouji/openwrt-passwall
