@@ -20,30 +20,6 @@ on:
     - cron: '00 18 * * 5'
 
 jobs:
-  clean:
-    runs-on: ubuntu-18.04
-    steps:
-      - name: clean old releases
-        uses: dev-drprasad/delete-older-releases@master
-        with:
-          keep_latest: 14
-          delete_tags: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-
-      - name: clean old action artifacts
-        uses: kolpav/purge-artifacts-action@master
-        with:
-          token: ${{ secrets.TOKEN }}
-          expire-in: 14d
-
-      - name: clean workflow log
-        uses: Mattraks/delete-workflow-runs@main
-        with:
-          token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          retain_days: 14
-
   build:
     runs-on: ubuntu-18.04
 
@@ -61,6 +37,8 @@ jobs:
 
     - name: Build firmware
       run: |
+        release_tag="$(date +%Y-%m-%d)"
+        echo ${release_tag} > ./files/etc/version
         ./action.sh build
 
     - name: Artifact firmware
