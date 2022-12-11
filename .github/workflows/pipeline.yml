@@ -58,7 +58,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
       with:
         tag_name: ${{ steps.artifact.outputs.release_tag }}
-        release_name: Auto Release ${{ steps.artifact.outputs.release_tag }}
+        release_name: ${{ steps.artifact.outputs.release_tag }}
         draft: false
         prerelease: false
 
