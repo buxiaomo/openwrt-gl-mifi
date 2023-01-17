@@ -49,8 +49,10 @@ function build() {
 		[ -f ./feeds.conf.default ] && cat ./feeds.conf.default >>./openwrt/feeds.conf.default
 	fi
 	pushd openwrt
-	git clone -b luci https://github.com/xiaorouji/openwrt-passwall.git ./package/luci-app-passwall
-	git clone -b packages https://github.com/xiaorouji/openwrt-passwall.git ./package/passwall
+
+	git clone https://github.com/NagaseKouichi/openwrt-chinadns-ng.git ./package/chinadns-ng
+	git clone -b luci https://github.com/NagaseKouichi/openwrt-chinadns-ng.git ./package/luci-app-chinadns-ng
+
 	./scripts/feeds update -a
 	./scripts/feeds install -a
 	[ -d ../patches ] && git am -3 ../patches/*.patch
