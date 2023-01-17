@@ -1,14 +1,10 @@
 config smartdns
-	option cache_size '2048'
-	option rr_ttl_max '3600'
-	option prefetch_domain '1'
-	option ipv6_server '0'
 	option server_name 'smartdns'
-	option port '6053'
 	option tcp_server '1'
-	option dualstack_ip_selection '0'
-	option serve_expired '0'
-	option rr_ttl_min '300'
+	option serve_expired '1'
+	option resolve_local_hostnames '1'
+	option force_https_soa '0'
+	option rr_ttl_min '600'
 	option seconddns_tcp_server '1'
 	option seconddns_no_speed_check '0'
 	option seconddns_no_rule_addr '0'
@@ -17,45 +13,58 @@ config smartdns
 	option seconddns_no_rule_soa '0'
 	option seconddns_no_dualstack_selection '0'
 	option seconddns_no_cache '0'
-	option force_aaaa_soa '0'
 	option coredump '0'
-	option seconddns_port '6054'
+	option port '6553'
+	option seconddns_port '6554'
+	option auto_set_dnsmasq '0'
+	option ipv6_server '0'
+	option dualstack_ip_selection '0'
+	option cache_size '2048'
+	option force_aaaa_soa '1'
 	option seconddns_server_group 'us'
+	option enabled '1'
 	option seconddns_enabled '1'
-	option redirect 'none'
-	option enabled '0'
+	option prefetch_domain '0'
+	option seconddns_force_aaaa_soa '0'
+	option old_port '6553'
+	option old_enabled '1'
+	option old_auto_set_dnsmasq '0'
+
 
 config server
 	option enabled '1'
 	option type 'udp'
-	option name 'AliDNS1'
+	option name 'AliDNS'
 	option ip '223.5.5.5'
 	option blacklist_ip '0'
-	option server_group 'cn'
 
 config server
 	option enabled '1'
 	option type 'udp'
-	option name 'AliDNS2'
-	option ip '223.6.6.6'
-	option blacklist_ip '0'
-	option server_group 'cn'
-
-config server
-	option enabled '1'
-	option type 'udp'
-	option name '114DNS1'
+	option name '114DNS'
 	option ip '114.114.114.114'
 	option blacklist_ip '0'
-	option server_group 'cn'
 
 config server
 	option enabled '1'
 	option type 'udp'
-	option name '114DNS1'
-	option ip '114.114.115.115'
+	option name 'DuDNS'
+	option ip '180.76.76.76'
 	option blacklist_ip '0'
-	option server_group 'cn'
+
+config server
+	option enabled '1'
+	option type 'udp'
+	option name 'CNNIC'
+	option ip '1.2.4.8'
+	option blacklist_ip '0'
+
+config server
+	option enabled '1'
+	option type 'udp'
+	option name 'DNSPod'
+	option ip '119.29.29.29'
+	option blacklist_ip '0'
 
 config server
 	option enabled '1'
@@ -63,46 +72,59 @@ config server
 	option name 'BaiduDNS'
 	option ip '180.76.76.76'
 	option blacklist_ip '0'
-	option server_group 'cn'
 
 config server
 	option enabled '1'
-	option name 'GoogleDNS01'
-	option ip '8.8.8.8'
-	option server_group 'us'
-	option type 'tcp'
-
-config server
-	option enabled '1'
-	option name 'GoogleDNS02'
+	option name 'Google'
 	option ip '8.8.8.8'
 	option server_group 'us'
 	option type 'tls'
 
 config server
 	option enabled '1'
-	option name 'GoogleDNS03'
-	option ip '8.8.8.8'
+	option name 'Norton'
+	option ip '199.85.126.10'
 	option server_group 'us'
-	option type 'https'
+	option type 'udp'
 
 config server
 	option enabled '1'
-	option name 'GoogleDNS04'
-	option ip '8.8.4.4'
+	option name 'OpenDNS'
+	option ip '208.67.222.222'
 	option server_group 'us'
-	option type 'tcp'
+	option type 'udp'
 
 config server
 	option enabled '1'
-	option name 'GoogleDNS05'
-	option ip '8.8.4.4'
+	option name 'DNSWatch'
+	option ip '84.200.69.80'
 	option server_group 'us'
-	option type 'tls'
+	option type 'udp'
 
 config server
 	option enabled '1'
-	option name 'GoogleDNS06'
-	option ip '8.8.4.4'
+	option name 'Comodo'
+	option ip '8.26.56.26'
 	option server_group 'us'
-	option type 'https'
+	option type 'udp'
+
+config server
+	option enabled '1'
+	option name 'Verisign'
+	option ip '64.6.64.6'
+	option server_group 'us'
+	option type 'udp'
+
+config server
+	option enabled '1'
+	option name 'OpenNIC'
+	option ip '192.95.54.3'
+	option server_group 'us'
+	option type 'udp'
+
+config server
+	option enabled '1'
+	option name 'Cloudflare'
+	option ip '1.1.1.1'
+	option server_group 'us'
+	option type 'udp'
